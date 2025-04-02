@@ -1,6 +1,7 @@
 import numpy as np
 from PIL import Image
 import sys
+from pprint import pp as pretty_print
 
 def kak(color_scheme: dict):
 	out = ""
@@ -12,10 +13,26 @@ def kak(color_scheme: dict):
 def css(color_scheme: dict):
 	out = ":root {\n"
 	for color, variants in color_scheme.items():
-		for variant, hex_val in variants.items():
-			out += f"  --{color}-{variant}: #{hex_val};\n"
+		out += ''.join([ f"  --{color}-{variant}: #{hex_val};\n" for variant, hex_val in variants.items() ])
 	out += "}"
 	return out
+
+def alacritty(color_scheme: dict):
+	magenta = color_scheme['purple']
+	del color_scheme['purple']
+	color_scheme['magenta'] = magenta
+
+	out = ["[colors]"]
+	out.append("[colors.normal]")
+	out += [f"{color} = \"#{variants["bright"]}\"" for color, variants in color_scheme.items()]
+
+	out.append("[colors.bright]")
+	out += [f"{color} = \"#{variants["light"]}\"" for color, variants in color_scheme.items()]
+
+	out.append("[colors.dim]")
+	out += [f"{color} = \"#{variants["bright"]}\"" for color, variants in color_scheme.items()]
+
+	return '\n'.join(out)
 
 def extract_color_scheme(image_path):
 	# Load image
@@ -45,6 +62,7 @@ def main(image_path):
 	sys.stdout.write({
 		"kak" : kak,
 		"css" : css,
+		"alacritty" : alacritty
 	}[sys.argv[1]](extract_color_scheme(image_path)))
 
 main('/dev/stdin')
