@@ -30,7 +30,7 @@ def alacritty(color_scheme: dict):
 	out += [f"{color} = \"#{variants["light"]}\"" for color, variants in color_scheme.items()]
 
 	out.append("[colors.dim]")
-	out += [f"{color} = \"#{variants["bright"]}\"" for color, variants in color_scheme.items()]
+	out += [f"{color} = \"#{variants["dark"]}\"" for color, variants in color_scheme.items()]
 
 	return '\n'.join(out)
 
