@@ -1,5 +1,7 @@
 colorscheme.css
+colorscheme-light.css
 pyenv
 *.kak
 testcases
 colorscheme.toml
+colorscheme-light.toml
